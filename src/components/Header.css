@@ -60,6 +60,14 @@
   color: var(--text-primary);
 }
 
+.language-flag {
+  font-size: 1.25rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
   .header {
     padding: 1rem;

@@ -1,7 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
+import { useLanguage } from '../LanguageContext'
+import { getTranslation } from '../translations'
 import './ChatInput.css'
 
 function ChatInput({ onSendMessage, disabled }) {
+  const { language } = useLanguage()
+  const t = (key) => getTranslation(language, key)
   const [input, setInput] = useState('')
   const textareaRef = useRef(null)
 
@@ -35,7 +39,7 @@ function ChatInput({ onSendMessage, disabled }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask about building codes, design principles, materials, structures..."
+          placeholder={t('typeMessage')}
           className="chat-input"
           rows="1"
           disabled={disabled}

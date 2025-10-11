@@ -3,21 +3,29 @@ import Header from './components/Header'
 import MessageList from './components/MessageList'
 import ChatInput from './components/ChatInput'
 import Sidebar from './components/Sidebar'
+import ToolsPanel from './components/ToolsPanel'
+import { useLanguage } from './LanguageContext'
+import { getTranslation } from './translations'
 import './App.css'
-
-const INITIAL_MESSAGE = {
-  id: 1,
-  role: 'assistant',
-  content: 'Hello! I\'m ArchGPT, your AI assistant for architecture. I can help you with design concepts, building codes, material selection, structural considerations, and more. How can I assist you today?'
-}
 
 const STORAGE_KEY = 'archgpt_conversations'
 
 function App() {
+  const { language } = useLanguage()
   const [conversations, setConversations] = useState([])
   const [currentConversationId, setCurrentConversationId] = useState(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light'
+  })
+  const [isToolsPanelOpen, setIsToolsPanelOpen] = useState(false)
+  
+  const INITIAL_MESSAGE = {
+    id: 1,
+    role: 'assistant',
+    content: getTranslation(language, 'initialMessage')
+  }
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY)
@@ -33,6 +41,11 @@ function App() {
       createNewConversation()
     }
   }, [])
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
 
   useEffect(() => {
     if (conversations.length > 0) {
@@ -129,7 +142,7 @@ function App() {
       const errorMessage = {
         id: Date.now() + 1,
         role: 'assistant',
-        content: 'I apologize, but I encountered an error. Please try again.'
+        content: getTranslation(language, 'errorMessage')
       }
 
       setConversations(prev => 
@@ -220,6 +233,10 @@ function App() {
     })
   }
 
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+  }
+
   const currentConversation = getCurrentConversation()
 
   return (
@@ -237,6 +254,9 @@ function App() {
         <Header 
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           onNewChat={createNewConversation}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          onOpenTools={() => setIsToolsPanelOpen(true)}
         />
         <MessageList 
           messages={currentConversation?.messages || []} 
@@ -247,6 +267,11 @@ function App() {
           disabled={isLoading}
         />
       </div>
+      <ToolsPanel 
+        isOpen={isToolsPanelOpen}
+        onClose={() => setIsToolsPanelOpen(false)}
+        onSendToChat={handleSendMessage}
+      />
     </div>
   )
 }
