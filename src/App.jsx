@@ -150,26 +150,54 @@ function App() {
   }
 
   const sendMessageToAPI = async (message) => {
-    const webhookUrl = 'https://iek.app.n8n.cloud/webhook/ec500af1-ea0b-49e6-9949-de1fd4e30c42'
+    const webhookUrl = import.meta.env.VITE_WEBHOOK_URL || ''
+    const apiKey = import.meta.env.VITE_API_KEY
     
-    const response = await fetch(webhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: message,
-        conversationHistory: getCurrentConversation()?.messages || []
-      })
-    })
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    if (message.length > 10000) {
+      throw new Error('Message too long')
     }
 
-    const data = await response.json()
+    const conversation = getCurrentConversation()
+    const recentMessages = conversation?.messages.slice(-10) || []
     
-    return data.response || data.message || data.text || data.output || JSON.stringify(data)
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 60000)
+
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+      }
+      
+      if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`
+      }
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          message: message,
+          conversationHistory: recentMessages
+        }),
+        signal: controller.signal
+      })
+
+      clearTimeout(timeoutId)
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`)
+      }
+
+      const data = await response.json()
+      
+      return data.response || data.message || data.text || data.output || 'No response received'
+    } catch (error) {
+      clearTimeout(timeoutId)
+      if (error.name === 'AbortError') {
+        throw new Error('Request timeout')
+      }
+      throw error
+    }
   }
 
   const handleSelectConversation = (conversationId) => {
