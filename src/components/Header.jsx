@@ -20,7 +20,7 @@ function Header({ onMenuClick, onNewChat, theme, onToggleTheme, onOpenTools }) {
       </button>
       <div className="header-title">
         <img
-          src="/assets/archgptlogo.jpg"
+          src="/assets/archgptlogo.png"
           alt="ArchGPT Logo"
           className="archgpt-logo"
         />
