@@ -2,7 +2,7 @@ import { useLanguage } from "../LanguageContext";
 import { getTranslation } from "../translations";
 import "./Header.css";
 
-function Header({ onMenuClick, onNewChat, theme, onToggleTheme, onOpenTools }) {
+function Header({ onMenuClick, onNewChat, theme, onToggleTheme, onOpenTools, onLogoClick }) {
   const { language, toggleLanguage } = useLanguage();
   const t = (key, replacements) => getTranslation(language, key, replacements);
 
@@ -23,6 +23,8 @@ function Header({ onMenuClick, onNewChat, theme, onToggleTheme, onOpenTools }) {
           src="/assets/archgptlogo.png"
           alt="ArchGPT Logo"
           className="archgpt-logo"
+          onClick={onLogoClick}
+          style={{ cursor: 'pointer' }}
         />
       </div>
       <div className="header-actions">

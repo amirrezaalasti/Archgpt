@@ -20,6 +20,11 @@ function App() {
     return localStorage.getItem('theme') || 'light'
   })
   const [isToolsPanelOpen, setIsToolsPanelOpen] = useState(false)
+  const [logoClickCount, setLogoClickCount] = useState(0)
+  const [isWebhookDialogOpen, setIsWebhookDialogOpen] = useState(false)
+  const [webhookUrl, setWebhookUrl] = useState(() => {
+    return localStorage.getItem('webhook_url') || import.meta.env.VITE_WEBHOOK_URL || ''
+  })
   
   const INITIAL_MESSAGE = {
     id: 1,
@@ -163,7 +168,7 @@ function App() {
   }
 
   const sendMessageToAPI = async (message) => {
-    const webhookUrl = import.meta.env.VITE_WEBHOOK_URL || ''
+    const currentWebhookUrl = webhookUrl || import.meta.env.VITE_WEBHOOK_URL || ''
     const apiKey = import.meta.env.VITE_API_KEY
     
     if (message.length > 10000) {
@@ -174,7 +179,7 @@ function App() {
     const recentMessages = conversation?.messages.slice(-10) || []
     
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 60000)
+    const timeoutId = setTimeout(() => controller.abort(), 600000)
 
     try {
       const headers = {
@@ -185,7 +190,7 @@ function App() {
         headers['Authorization'] = `Bearer ${apiKey}`
       }
 
-      const response = await fetch(webhookUrl, {
+      const response = await fetch(currentWebhookUrl, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
@@ -237,6 +242,31 @@ function App() {
     setTheme(prev => prev === 'light' ? 'dark' : 'light')
   }
 
+  const handleLogoClick = () => {
+    const newCount = logoClickCount + 1
+    setLogoClickCount(newCount)
+    
+    if (newCount >= 5) {
+      setIsWebhookDialogOpen(true)
+      setLogoClickCount(0)
+    } else {
+      // Reset count after 2 seconds if not reached 5
+      setTimeout(() => {
+        setLogoClickCount(0)
+      }, 2000)
+    }
+  }
+
+  const handleSaveWebhookUrl = (url) => {
+    setWebhookUrl(url)
+    localStorage.setItem('webhook_url', url)
+    setIsWebhookDialogOpen(false)
+  }
+
+  const handleCloseWebhookDialog = () => {
+    setIsWebhookDialogOpen(false)
+  }
+
   const currentConversation = getCurrentConversation()
 
   return (
@@ -257,6 +287,7 @@ function App() {
           theme={theme}
           onToggleTheme={toggleTheme}
           onOpenTools={() => setIsToolsPanelOpen(true)}
+          onLogoClick={handleLogoClick}
         />
         <MessageList 
           messages={currentConversation?.messages || []} 
@@ -272,6 +303,66 @@ function App() {
         onClose={() => setIsToolsPanelOpen(false)}
         onSendToChat={handleSendMessage}
       />
+      {isWebhookDialogOpen && (
+        <WebhookDialog
+          currentUrl={webhookUrl}
+          onSave={handleSaveWebhookUrl}
+          onClose={handleCloseWebhookDialog}
+        />
+      )}
+    </div>
+  )
+}
+
+function WebhookDialog({ currentUrl, onSave, onClose }) {
+  const [url, setUrl] = useState(currentUrl)
+  const { language } = useLanguage()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSave(url)
+  }
+
+  return (
+    <div className="dialog-overlay" onClick={onClose}>
+      <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+        <div className="dialog-header">
+          <h2>{getTranslation(language, 'webhookSettings') || 'Webhook Settings'}</h2>
+          <button className="dialog-close" onClick={onClose}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M18 6L6 18M6 6l12 12"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="dialog-body">
+            <label htmlFor="webhook-url">
+              {getTranslation(language, 'webhookUrl') || 'Webhook URL'}
+            </label>
+            <input
+              id="webhook-url"
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://example.com/webhook"
+              autoFocus
+            />
+          </div>
+          <div className="dialog-footer">
+            <button type="button" onClick={onClose} className="dialog-button-secondary">
+              {getTranslation(language, 'cancel') || 'Cancel'}
+            </button>
+            <button type="submit" className="dialog-button-primary">
+              {getTranslation(language, 'save') || 'Save'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
