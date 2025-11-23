@@ -23,7 +23,7 @@ function App() {
   const [logoClickCount, setLogoClickCount] = useState(0)
   const [isWebhookDialogOpen, setIsWebhookDialogOpen] = useState(false)
   const [webhookUrl, setWebhookUrl] = useState(() => {
-    return localStorage.getItem('webhook_url') || import.meta.env.VITE_WEBHOOK_URL || ''
+    return import.meta.env.VITE_WEBHOOK_URL || ''
   })
   
   const INITIAL_MESSAGE = {
@@ -177,9 +177,6 @@ function App() {
 
     const conversation = getCurrentConversation()
     const recentMessages = conversation?.messages.slice(-10) || []
-    
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 600000)
 
     try {
       const headers = {
@@ -196,11 +193,8 @@ function App() {
         body: JSON.stringify({
           message: message,
           conversationHistory: recentMessages
-        }),
-        signal: controller.signal
+        })
       })
-
-      clearTimeout(timeoutId)
 
       if (!response.ok) {
         throw new Error(`API Error: ${response.status}`)
@@ -210,10 +204,6 @@ function App() {
       
       return data.response || data.message || data.text || data.output || 'No response received'
     } catch (error) {
-      clearTimeout(timeoutId)
-      if (error.name === 'AbortError') {
-        throw new Error('Request timeout')
-      }
       throw error
     }
   }
@@ -259,7 +249,6 @@ function App() {
 
   const handleSaveWebhookUrl = (url) => {
     setWebhookUrl(url)
-    localStorage.setItem('webhook_url', url)
     setIsWebhookDialogOpen(false)
   }
 
