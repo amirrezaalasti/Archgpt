@@ -21,7 +21,7 @@ function Header({ onMenuClick, onNewChat, theme, onToggleTheme, onOpenTools, onL
       <div className="header-title">
         <img
           src="/assets/archgptlogo.png"
-          alt="ArchIng Logo"
+          alt="ArcIng Logo"
           className="archgpt-logo"
           onClick={onLogoClick}
           style={{ cursor: 'pointer' }}

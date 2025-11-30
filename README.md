@@ -1,4 +1,4 @@
-# ArchIng - AI Assistant for Architects
+# ArcIng - AI Assistant for Architects
 
 A modern, ChatGPT-style interface specifically designed for architects. Built with React and Vite.
 
@@ -35,7 +35,7 @@ A modern, ChatGPT-style interface specifically designed for architects. Built wi
 
 1. Clone or navigate to the project directory:
 ```bash
-cd ArchIng
+cd ArcIng
 ```
 
 2. Install dependencies:
@@ -59,7 +59,7 @@ npm run dev
 ## Project Structure
 
 ```
-ArchIng/
+ArcIng/
 ├── src/
 │   ├── components/
 │   │   ├── Header.jsx       # Top navigation bar

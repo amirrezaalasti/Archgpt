@@ -17,7 +17,7 @@ function MessageList({ messages, isLoading }) {
               {message.role === 'assistant' ? (
                 <img 
                   src="/assets/chatlogo.png" 
-                  alt="ArchIng" 
+                  alt="ArcIng" 
                   className="assistant-avatar-img"
                 />
               ) : (
@@ -30,7 +30,7 @@ function MessageList({ messages, isLoading }) {
             </div>
             <div className="message-content">
               <div className="message-role">
-                {message.role === 'assistant' ? 'ArchIng' : 'You'}
+                {message.role === 'assistant' ? 'ArcIng' : 'You'}
               </div>
               <div className="message-text">{message.content}</div>
             </div>
@@ -41,12 +41,12 @@ function MessageList({ messages, isLoading }) {
             <div className="message-avatar">
               <img 
                 src="/assets/chatlogo.png" 
-                alt="ArchIng" 
+                alt="ArcIng" 
                 className="assistant-avatar-img"
               />
             </div>
             <div className="message-content">
-              <div className="message-role">ArchIng</div>
+              <div className="message-role">ArcIng</div>
               <div className="message-text">
                 <div className="typing-indicator">
                   <span></span>

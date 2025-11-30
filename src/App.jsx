@@ -8,7 +8,7 @@ import { useLanguage } from './LanguageContext'
 import { getTranslation } from './translations'
 import './App.css'
 
-const STORAGE_KEY = 'arching_conversations'
+const STORAGE_KEY = 'arcing_conversations'
 
 function App() {
   const { language } = useLanguage()
