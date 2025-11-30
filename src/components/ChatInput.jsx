@@ -55,7 +55,7 @@ function ChatInput({ onSendMessage, disabled }) {
         </button>
       </form>
       <p className="input-hint">
-        ArchGPT can make mistakes. Verify important information.
+        ArchIng can make mistakes. Verify important information.
       </p>
     </div>
   )

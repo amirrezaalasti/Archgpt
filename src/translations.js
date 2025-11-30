@@ -1,7 +1,7 @@
 export const translations = {
   en: {
     // Header
-    appTitle: 'ArchGPT',
+    appTitle: 'ArchIng',
     newChat: 'New Chat',
     tools: 'Architectural Tools',
     switchTheme: 'Switch to {{mode}} mode',
@@ -16,7 +16,7 @@ export const translations = {
     startNewChat: 'Start a new chat to begin',
     
     // Chat
-    initialMessage: "Hello! I'm ArchGPT, your AI assistant for architecture. I can help you with design concepts, building codes, material selection, structural considerations, and more. How can I assist you today?",
+    initialMessage: "Hello! I'm ArchIng, your AI assistant for architecture. I can help you with design concepts, building codes, material selection, structural considerations, and more. How can I assist you today?",
     errorMessage: 'I apologize, but I encountered an error. Please try again.',
     typeMessage: 'Type your message...',
     send: 'Send',
@@ -143,7 +143,7 @@ export const translations = {
   
   de: {
     // Header
-    appTitle: 'ArchGPT',
+    appTitle: 'ArchIng',
     newChat: 'Neuer Chat',
     tools: 'Architektur-Werkzeuge',
     switchTheme: 'Zu {{mode}}-Modus wechseln',
@@ -158,7 +158,7 @@ export const translations = {
     startNewChat: 'Starten Sie einen neuen Chat',
     
     // Chat
-    initialMessage: 'Hallo! Ich bin ArchGPT, Ihr KI-Assistent für Architektur. Ich kann Ihnen bei Designkonzepten, Bauvorschriften, Materialauswahl, strukturellen Überlegungen und mehr helfen. Wie kann ich Sie heute unterstützen?',
+    initialMessage: 'Hallo! Ich bin ArchIng, Ihr KI-Assistent für Architektur. Ich kann Ihnen bei Designkonzepten, Bauvorschriften, Materialauswahl, strukturellen Überlegungen und mehr helfen. Wie kann ich Sie heute unterstützen?',
     errorMessage: 'Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
     typeMessage: 'Geben Sie Ihre Nachricht ein...',
     send: 'Senden',
