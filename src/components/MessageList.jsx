@@ -15,11 +15,11 @@ function MessageList({ messages, isLoading }) {
           <div key={message.id} className={`message ${message.role}`}>
             <div className="message-avatar">
               {message.role === 'assistant' ? (
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-                  <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-                  <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-                </svg>
+                <img 
+                  src="/assets/chatlogo.png" 
+                  alt="ArchGPT" 
+                  className="assistant-avatar-img"
+                />
               ) : (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
@@ -39,11 +39,11 @@ function MessageList({ messages, isLoading }) {
         {isLoading && (
           <div className="message assistant">
             <div className="message-avatar">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-                <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-                <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
-              </svg>
+              <img 
+                src="/assets/chatlogo.png" 
+                alt="ArchGPT" 
+                className="assistant-avatar-img"
+              />
             </div>
             <div className="message-content">
               <div className="message-role">ArchGPT</div>
